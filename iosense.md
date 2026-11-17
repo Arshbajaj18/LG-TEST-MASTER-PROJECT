@@ -4,7 +4,7 @@
 
 | Setting | Value | Where |
 |---|---|---|
-| API root | `https://10.102.120.46/api` (LG on-prem; cloud equivalent `https://connector.iosense.io/api`) | `VITE_IOSENSE_API_ROOT` in `.env`, or `apiRoot` in `public/config.js` at runtime |
+| API root | `http://10.102.120.46:3002/api` (LG on-prem: plain http on port 3002; cloud equivalent `https://connector.iosense.io/api`) | `VITE_IOSENSE_API_ROOT` in `.env`, or `apiRoot` in `public/config.js` at runtime |
 | Insight | `INS_85cbe7954686` | `VITE_IOSENSE_INSIGHT_ID`, or `insightId` in `public/config.js` |
 | Auth | SSO token from I/O Sense launch URL (`?token=`) → Bearer, kept in `sessionStorage` | `src/auth/` |
 

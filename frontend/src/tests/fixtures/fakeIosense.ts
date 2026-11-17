@@ -1,14 +1,16 @@
 import type { Page, Route } from '@playwright/test'
 
 /**
- * In-memory stand-in for the LG on-prem I/O Sense connector (10.102.120.46 is not reachable from CI).
+ * In-memory stand-in for the LG on-prem I/O Sense connector (10.102.120.46:3002 is not reachable from CI).
  * Mirrors the Bruce insight-result contract verified against the live cloud connector:
  * - filter.tags must be an array and is AND-combined, otherwise { success: false, errors: ['Invalid tags'] }
  * - include-style projection with dotted paths; _id and metadata always returned
  * - newest first, nested pagination { page, count } -> { data, totalCount, pagination }
  */
 
-export const ON_PREM_HOST = '10.102.120.46'
+export const ON_PREM_HOST = '10.102.120.46:3002'
+/** The on-prem connector is plain http on port 3002, unlike the https cloud connector. */
+export const ON_PREM_ORIGIN = `http://${ON_PREM_HOST}`
 export const INSIGHT_ID = 'INS_85cbe7954686'
 export const VALID_SSO = 'valid-sso-token'
 export const BEARER = 'Bearer test-jwt'
@@ -61,7 +63,7 @@ export class FakeIosense {
   }
 
   async install() {
-    await this.page.route(`**://${ON_PREM_HOST}/api/**`, (route) => this.handle(route))
+    await this.page.route(`${ON_PREM_ORIGIN}/api/**`, (route) => this.handle(route))
   }
 
   rowsTagged(...tags: string[]) {

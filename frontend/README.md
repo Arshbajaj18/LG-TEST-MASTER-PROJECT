@@ -18,7 +18,7 @@ Open the app from I/O Sense so it receives `?token=<SSO token>`. When the token 
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `VITE_IOSENSE_API_ROOT` | `https://10.102.120.46/api` | Connector API root. LG on-prem uses the same routes as cloud on a different domain |
+| `VITE_IOSENSE_API_ROOT` | `http://10.102.120.46:3002/api` | Connector API root. LG on-prem uses the same routes as cloud on a different domain |
 | `VITE_IOSENSE_INSIGHT_ID` | `INS_85cbe7954686` | Insight that stores categories and test masters |
 | `VITE_IOSENSE_ORGANISATION` | *(empty)* | Optional `organisation` header for the SSO exchange |
 

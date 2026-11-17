@@ -19,7 +19,7 @@ function pick(runtimeValue: string | null | undefined, envValue: string | undefi
 
 export const config = {
   /** API root including the `/api` prefix, without trailing slash. */
-  apiRoot: pick(runtime.apiRoot, import.meta.env.VITE_IOSENSE_API_ROOT, 'https://10.102.120.46/api').replace(/\/+$/, ''),
+  apiRoot: pick(runtime.apiRoot, import.meta.env.VITE_IOSENSE_API_ROOT, 'http://10.102.120.46:3002/api').replace(/\/+$/, ''),
   insightId: pick(runtime.insightId, import.meta.env.VITE_IOSENSE_INSIGHT_ID, 'INS_85cbe7954686'),
   organisation: pick(runtime.organisation, import.meta.env.VITE_IOSENSE_ORGANISATION, ''),
 }

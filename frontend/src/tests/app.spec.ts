@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import { fileURLToPath } from 'node:url'
 import * as XLSX from 'xlsx'
-import { BEARER, FakeIosense, INSIGHT_ID, ON_PREM_HOST, VALID_SSO } from './fixtures/fakeIosense.ts'
+import { BEARER, FakeIosense, INSIGHT_ID, ON_PREM_ORIGIN, VALID_SSO } from './fixtures/fakeIosense.ts'
 
 const WM_EXCEL = fileURLToPath(new URL('../../../WM Test master (1).xlsx', import.meta.url))
 const SHOTS = fileURLToPath(new URL('../../test-results/screenshots/', import.meta.url))
@@ -40,7 +40,7 @@ test('SSO login → categories → upload WM test master → browse → replace 
   await expect(page.getByRole('heading', { name: 'No categories yet' })).toBeVisible()
   expect(page.url()).not.toContain(VALID_SSO)
   const ssoCall = fake.requests.find((r) => r.url.includes('/api/retrieve-sso-token/'))
-  expect(ssoCall?.url).toBe(`https://${ON_PREM_HOST}/api/retrieve-sso-token/${VALID_SSO}`)
+  expect(ssoCall?.url).toBe(`${ON_PREM_ORIGIN}/api/retrieve-sso-token/${VALID_SSO}`)
   await page.screenshot({ path: `${SHOTS}01-categories-empty.png` })
 
   // --- Categories (cards like the I/O Sense Test Plan Monitoring page)
@@ -55,7 +55,7 @@ test('SSO login → categories → upload WM test master → browse → replace 
   const adds = fake.requests.filter((r) => r.url.endsWith('/insightResult/add'))
   expect(adds.length).toBe(3)
   for (const add of adds) {
-    expect(add.url).toBe(`https://${ON_PREM_HOST}/api/account/bruce/insightResult/add`)
+    expect(add.url).toBe(`${ON_PREM_ORIGIN}/api/account/bruce/insightResult/add`)
     expect(add.headers['authorization']).toBe(BEARER)
     expect((add.body as { insightID: string }).insightID).toBe(INSIGHT_ID)
   }
