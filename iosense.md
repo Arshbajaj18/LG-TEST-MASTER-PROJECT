@@ -50,10 +50,16 @@ expired token sends the user back to sign-in.
 - `projection` accepts dotted paths (`{"result.itemCount": 1}`); `_id` and populated `metadata.userID` always come back.
 - Rows come back newest first. Pagination is nested: `{ pagination: { page, count } }` → `{ data, totalCount, pagination: { totalPages } }`.
 - Failures can be HTTP 200 with `success:false`, so the client checks both status and flag.
-- `insightResult/add` validates its payload: `invocationTime` must be a **date** (an epoch number
-  is rejected with "invocationTime is a date field") and `metadata` must be present and an object
-  ("metadata are required object field"). The client sends an ISO timestamp and
-  `{ userID: <signed-in user> }`.
+- `insightResult/add` validates its payload, and rejects a row that omits any of:
+  - `applicationType` — `"Application"`, the value rows from other I/O Sense apps carry
+    (`ValidateInsightResult: Error: 'applicationType' is required`)
+  - `invocationTime` — an ISO date string; an epoch number is rejected
+    (`invocationTime is a date field`)
+  - `metadata` — an object; the client sends `{ userID: <signed-in user> }`
+    (`metadata are required object field`)
+
+  These were confirmed against rows written by other applications on a live I/O Sense account,
+  which store `applicationType: "Application"` and an ISO `invocationTime`.
 
 ## Data model in `INS_85cbe7954686`
 

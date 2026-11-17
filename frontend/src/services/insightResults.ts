@@ -30,12 +30,16 @@ const MAX_PAGES = 50
 
 const bruce = (route: string) => `/account/bruce/insightResult${route}`
 
+/** What rows written by an I/O Sense application are tagged as; the connector requires it. */
+const APPLICATION_TYPE = 'Application'
+
 /**
  * POST /account/bruce/insightResult/add
  *
- * The connector validates two fields strictly: `invocationTime` is a date (an epoch
- * number is rejected) and `metadata` must be present and an object. The signed-in
- * user id is passed through so rows carry an author.
+ * The connector validates the payload strictly: `applicationType` is required,
+ * `invocationTime` must be a date (an epoch number is rejected) and `metadata` must be
+ * present and an object. These values match what rows written by other I/O Sense
+ * applications carry, so results read back the same way theirs do.
  */
 export async function createInsightResult<R extends object>(input: {
   resultName: string
@@ -48,6 +52,7 @@ export async function createInsightResult<R extends object>(input: {
     resultName: input.resultName,
     tags: input.tags,
     result: input.result,
+    applicationType: APPLICATION_TYPE,
     invocationTime: new Date().toISOString(),
     metadata: userId ? { userID: userId } : {},
   })
