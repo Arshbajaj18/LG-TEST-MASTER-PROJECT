@@ -1,4 +1,5 @@
 import { config } from '../config'
+import { loadSession } from '../auth/session'
 import { iosenseRequest } from './http'
 
 /** A row in a Bruce insight's result collection, as returned by the list route. */
@@ -29,18 +30,26 @@ const MAX_PAGES = 50
 
 const bruce = (route: string) => `/account/bruce/insightResult${route}`
 
-/** POST /account/bruce/insightResult/add */
+/**
+ * POST /account/bruce/insightResult/add
+ *
+ * The connector validates two fields strictly: `invocationTime` is a date (an epoch
+ * number is rejected) and `metadata` must be present and an object. The signed-in
+ * user id is passed through so rows carry an author.
+ */
 export async function createInsightResult<R extends object>(input: {
   resultName: string
   tags: string[]
   result: R
 }): Promise<InsightResultRow<R>> {
+  const userId = loadSession()?.userId
   return iosenseRequest<InsightResultRow<R>>('POST', bruce('/add'), {
     insightID: config.insightId,
     resultName: input.resultName,
     tags: input.tags,
     result: input.result,
-    invocationTime: Date.now(),
+    invocationTime: new Date().toISOString(),
+    metadata: userId ? { userID: userId } : {},
   })
 }
 

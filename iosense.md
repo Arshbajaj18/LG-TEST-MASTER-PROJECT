@@ -50,6 +50,10 @@ expired token sends the user back to sign-in.
 - `projection` accepts dotted paths (`{"result.itemCount": 1}`); `_id` and populated `metadata.userID` always come back.
 - Rows come back newest first. Pagination is nested: `{ pagination: { page, count } }` → `{ data, totalCount, pagination: { totalPages } }`.
 - Failures can be HTTP 200 with `success:false`, so the client checks both status and flag.
+- `insightResult/add` validates its payload: `invocationTime` must be a **date** (an epoch number
+  is rejected with "invocationTime is a date field") and `metadata` must be present and an object
+  ("metadata are required object field"). The client sends an ISO timestamp and
+  `{ userID: <signed-in user> }`.
 
 ## Data model in `INS_85cbe7954686`
 

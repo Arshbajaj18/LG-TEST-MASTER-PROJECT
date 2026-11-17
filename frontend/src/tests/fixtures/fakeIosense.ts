@@ -4,6 +4,7 @@ import type { Page, Route } from '@playwright/test'
  * In-memory stand-in for the LG on-prem I/O Sense connector (10.102.120.46:3002 is not reachable from CI).
  * Mirrors the Bruce insight-result contract verified against the live cloud connector:
  * - filter.tags must be an array and is AND-combined, otherwise { success: false, errors: ['Invalid tags'] }
+ * - add requires a `metadata` object and an ISO-date `invocationTime`
  * - include-style projection with dotted paths; _id and metadata always returned
  * - newest first, nested pagination { page, count } -> { data, totalCount, pagination }
  */
@@ -116,6 +117,13 @@ export class FakeIosense {
     if (path === '/api/account/bruce/insightResult/add' && method === 'POST') {
       if (body.insightID !== INSIGHT_ID) return this.json(route, 404, { success: false, errors: ['Insight not found.'] })
       if (!body.result || typeof body.result !== 'object') return this.json(route, 400, { success: false, errors: ['result is required'] })
+      // The on-prem connector rejects both of these, so the fake does too.
+      if (!body.metadata || typeof body.metadata !== 'object') {
+        return this.json(route, 400, { success: false, errors: ['metadata are required object field'] })
+      }
+      if (typeof body.invocationTime !== 'string' || Number.isNaN(Date.parse(body.invocationTime))) {
+        return this.json(route, 400, { success: false, errors: ['invocationTime is a date field'] })
+      }
       this.clock += 1000
       const row: StoredRow = {
         _id: this.nextId(),
