@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState, type ChangeEvent } from 'react'
 import type { ParsedTestMaster } from '../../types'
-import { config } from '../../config'
 import { getCategory, getTestMaster, saveTestMaster } from '../../services/testMasterStore'
 import { useAsync } from '../../hooks/useAsync'
 import { errorMessage, plural } from '../../utils/format'
@@ -70,11 +69,11 @@ export function CategoryDetailPage({ categoryId }: { categoryId: string }) {
     if (file) void handleFile(file)
   }
 
-  const handleSave = async (parsed: ParsedTestMaster, onProgress: (done: number, total: number) => void) => {
+  const handleSave = async (parsed: ParsedTestMaster) => {
     if (!category) return
-    await saveTestMaster(category, parsed, onProgress)
+    await saveTestMaster(category, parsed)
 
-    // Read the master back out of the insight, so the confirmation reflects what I/O Sense
+    // Read the master back out of the database, so the confirmation reflects what was
     // actually stored rather than what the browser just sent.
     let stored: number | null = null
     try {
@@ -86,10 +85,10 @@ export function CategoryDetailPage({ categoryId }: { categoryId: string }) {
 
     if (stored === null) return
     if (stored === parsed.items.length) {
-      toast.show(`Saved ${plural(stored, 'test')} to ${category.name} — verified in ${config.insightId}`)
+      toast.show(`Saved ${plural(stored, 'test')} to ${category.name} — verified in MongoDB`)
     } else {
       toast.show(
-        `Saved, but ${config.insightId} returned ${plural(stored, 'test')} of ${parsed.items.length}. Check the insight.`,
+        `Saved, but MongoDB returned ${plural(stored, 'test')} of ${parsed.items.length}. Check the database status.`,
         'error',
       )
     }

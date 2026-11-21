@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { InsightStatus } from '../insight/InsightStatus'
+import { StorageStatus } from '../status/StorageStatus'
 import { ChevronRightIcon, ClipboardListIcon } from '../ui/Icons'
 import './AppShell.css'
 
@@ -31,7 +31,7 @@ export function AppShell({ crumb, children }: AppShellProps) {
             </>
           )}
         </nav>
-        <InsightStatus />
+        <StorageStatus />
       </header>
       <main className="app-main">{children}</main>
       <footer className="app-footer">© {YEAR}, powered by Faclon Labs</footer>

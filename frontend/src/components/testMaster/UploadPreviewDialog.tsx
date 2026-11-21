@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { ParsedTestMaster, TestMaster } from '../../types'
-import { config } from '../../config'
 import { errorMessage, plural } from '../../utils/format'
 import { Dialog } from '../ui/Dialog'
 import { AlertTriangleIcon } from '../ui/Icons'
@@ -9,7 +8,7 @@ import { CellText } from './CellText'
 interface UploadPreviewDialogProps {
   sheets: ParsedTestMaster[]
   existing: TestMaster | null
-  onSave: (parsed: ParsedTestMaster, onProgress: (done: number, total: number) => void) => Promise<void>
+  onSave: (parsed: ParsedTestMaster) => Promise<void>
   onClose: () => void
 }
 
@@ -18,7 +17,6 @@ const PREVIEW_ROWS = 6
 export function UploadPreviewDialog({ sheets, existing, onSave, onClose }: UploadPreviewDialogProps) {
   const [sheetIndex, setSheetIndex] = useState(0)
   const [saving, setSaving] = useState(false)
-  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const parsed = sheets[sheetIndex]
@@ -28,11 +26,10 @@ export function UploadPreviewDialog({ sheets, existing, onSave, onClose }: Uploa
     setSaving(true)
     setError(null)
     try {
-      await onSave(parsed, (done, total) => setProgress({ done, total }))
+      await onSave(parsed)
     } catch (err) {
       setError(errorMessage(err))
       setSaving(false)
-      setProgress(null)
     }
   }
 
@@ -50,17 +47,13 @@ export function UploadPreviewDialog({ sheets, existing, onSave, onClose }: Uploa
       busy={saving}
       footer={
         <>
-          <span className="preview-target">Saves to insight {config.insightId}</span>
+          <span className="preview-target">Saves to MongoDB</span>
           <button type="button" className="btn btn-secondary" onClick={onClose} disabled={saving}>
             Cancel
           </button>
           <button type="button" className="btn btn-primary" onClick={() => void save()} disabled={saving}>
             {saving && <span className="spinner" />}
-            {saving
-              ? progress && progress.total > 1
-                ? `Saving part ${Math.min(progress.done + 1, progress.total)} of ${progress.total}…`
-                : 'Saving…'
-              : `Save ${plural(parsed.items.length, 'test')}`}
+            {saving ? 'Saving…' : `Save ${plural(parsed.items.length, 'test')}`}
           </button>
         </>
       }

@@ -29,7 +29,10 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             label={`Actions for ${category.name}`}
             items={[
               { label: 'Edit', icon: <PencilIcon size={16} />, onSelect: onEdit },
-              { label: 'Delete', icon: <TrashIcon size={16} />, danger: true, onSelect: onDelete },
+              // Default categories must always exist, so they offer no Delete.
+              ...(category.isDefault
+                ? []
+                : [{ label: 'Delete', icon: <TrashIcon size={16} />, danger: true, onSelect: onDelete }]),
             ]}
           />
         </div>

@@ -1,7 +1,5 @@
 interface RuntimeConfig {
-  apiRoot?: string | null
-  insightId?: string | null
-  organisation?: string | null
+  dataApiRoot?: string | null
 }
 
 declare global {
@@ -18,16 +16,9 @@ function pick(runtimeValue: string | null | undefined, envValue: string | undefi
 }
 
 export const config = {
-  /** API root including the `/api` prefix, without trailing slash. */
-  apiRoot: pick(runtime.apiRoot, import.meta.env.VITE_IOSENSE_API_ROOT, 'http://10.102.120.46:3002/api').replace(/\/+$/, ''),
-  insightId: pick(runtime.insightId, import.meta.env.VITE_IOSENSE_INSIGHT_ID, 'INS_85cbe7954686'),
-  organisation: pick(runtime.organisation, import.meta.env.VITE_IOSENSE_ORGANISATION, ''),
+  /**
+   * Test Plan Masters API (backend/, backed by MongoDB), without trailing slash. A relative value
+   * resolves against the page, so the default works when the backend also serves the frontend.
+   */
+  dataApiRoot: pick(runtime.dataApiRoot, import.meta.env.VITE_TESTMASTER_API_ROOT, 'api').replace(/\/+$/, ''),
 }
-
-export const apiHost = (() => {
-  try {
-    return new URL(config.apiRoot).host
-  } catch {
-    return config.apiRoot
-  }
-})()

@@ -266,6 +266,11 @@ textarea.input {
   border-color: var(--red-600);
 }
 
+.input:read-only {
+  background: var(--gray-100);
+  color: var(--slate-500);
+}
+
 .search-input {
   position: relative;
   display: flex;

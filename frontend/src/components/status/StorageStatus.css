@@ -1,5 +1,5 @@
 /* The header chip doubles as the connection indicator: its colour is the quickest
-   answer to "is this deployment actually talking to I/O Sense?". */
+   answer to "is this deployment actually reading and writing MongoDB?". */
 .app-env-ok .app-env-dot {
   background: var(--green-600);
   box-shadow: 0 0 0 3px rgba(0, 162, 81, 0.16);
@@ -8,7 +8,7 @@
 .app-env-checking .app-env-dot {
   background: var(--slate-300);
   box-shadow: 0 0 0 3px rgba(152, 162, 179, 0.18);
-  animation: insight-pulse 1.2s var(--ease-out) infinite;
+  animation: storage-pulse 1.2s var(--ease-out) infinite;
 }
 
 .app-env-failed {
@@ -22,7 +22,7 @@
   box-shadow: 0 0 0 3px rgba(195, 34, 59, 0.16);
 }
 
-@keyframes insight-pulse {
+@keyframes storage-pulse {
   50% {
     opacity: 0.35;
   }
@@ -34,7 +34,7 @@
   }
 }
 
-.insight-banner {
+.storage-banner {
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -45,34 +45,34 @@
   margin-bottom: 14px;
 }
 
-.insight-banner svg {
+.storage-banner svg {
   flex: none;
   margin-top: 1px;
 }
 
-.insight-banner-ok {
+.storage-banner-ok {
   background: var(--green-50);
   color: var(--green-700);
 }
 
-.insight-banner-checking {
+.storage-banner-checking {
   background: var(--gray-50);
   color: var(--slate-500);
 }
 
-.insight-banner-failed {
+.storage-banner-failed {
   background: var(--red-50);
   color: var(--red-600);
 }
 
-.insight-facts {
+.storage-facts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 16px;
   margin: 0 0 16px;
 }
 
-.insight-facts dt {
+.storage-facts dt {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -81,18 +81,18 @@
   margin-bottom: 2px;
 }
 
-.insight-facts dd {
+.storage-facts dd {
   margin: 0;
   font-size: 13px;
   color: var(--ink-900);
   word-break: break-all;
 }
 
-.insight-mono {
+.storage-mono {
   font-family: var(--font-data);
 }
 
-.insight-counts {
+.storage-counts {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
@@ -102,7 +102,7 @@
   margin-bottom: 16px;
 }
 
-.insight-subhead {
+.storage-subhead {
   margin: 0 0 8px;
   font-size: 12px;
   font-weight: 600;
@@ -111,26 +111,26 @@
   color: var(--slate-400);
 }
 
-.insight-empty {
+.storage-empty {
   margin: 0;
   font-size: 13px;
   color: var(--slate-500);
 }
 
-.insight-table-wrap {
+.storage-table-wrap {
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-md);
   overflow: hidden;
 }
 
-.insight-table {
+.storage-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
   font-size: 12px;
 }
 
-.insight-table th {
+.storage-table th {
   padding: 8px 10px;
   background: var(--gray-50);
   border-bottom: 1px solid var(--gray-200);
@@ -142,7 +142,7 @@
   color: var(--slate-500);
 }
 
-.insight-table td {
+.storage-table td {
   padding: 8px 10px;
   border-bottom: 1px solid var(--gray-100);
   vertical-align: top;
@@ -150,29 +150,29 @@
   word-break: break-word;
 }
 
-.insight-table tr:last-child td {
+.storage-table tr:last-child td {
   border-bottom: 0;
 }
 
-.insight-id-cell {
+.storage-id-cell {
   width: 32%;
   font-size: 11px;
   color: var(--slate-500);
 }
 
-.insight-when {
+.storage-when {
   width: 28%;
   color: var(--slate-500);
 }
 
 @media (max-width: 640px) {
-  .insight-facts,
-  .insight-counts {
+  .storage-facts,
+  .storage-counts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .insight-table th:nth-child(2),
-  .insight-table td:nth-child(2) {
+  .storage-table th:nth-child(2),
+  .storage-table td:nth-child(2) {
     display: none;
   }
 }

@@ -140,6 +140,7 @@ export function CategoriesPage() {
         <CategoryFormDialog
           mode={editing.mode}
           initial={editing.mode === 'edit' ? editing.category : undefined}
+          nameLocked={editing.mode === 'edit' && editing.category.isDefault}
           existingNames={(categories ?? []).map((c) => c.name)}
           onSubmit={handleSubmit}
           onClose={() => setEditing(null)}
@@ -152,8 +153,8 @@ export function CategoriesPage() {
         message={
           <>
             <strong>{deleting?.name}</strong> and its test master
-            {deleting?.testCount ? ` (${plural(deleting.testCount, 'test')})` : ''} will be permanently removed from I/O
-            Sense. This can't be undone.
+            {deleting?.testCount ? ` (${plural(deleting.testCount, 'test')})` : ''} will be permanently removed from the
+            database. This can't be undone.
           </>
         }
         confirmLabel="Delete"

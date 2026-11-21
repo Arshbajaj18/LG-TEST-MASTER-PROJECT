@@ -5,6 +5,8 @@ import { errorMessage } from '../../utils/format'
 interface CategoryFormDialogProps {
   mode: 'create' | 'edit'
   initial?: { name: string; description: string }
+  /** Default categories keep their name; only the description can change. */
+  nameLocked?: boolean
   existingNames: string[]
   onSubmit: (values: { name: string; description: string }) => Promise<void>
   onClose: () => void
@@ -13,7 +15,7 @@ interface CategoryFormDialogProps {
 const NAME_MAX = 80
 const DESC_MAX = 160
 
-export function CategoryFormDialog({ mode, initial, existingNames, onSubmit, onClose }: CategoryFormDialogProps) {
+export function CategoryFormDialog({ mode, initial, nameLocked, existingNames, onSubmit, onClose }: CategoryFormDialogProps) {
   const [name, setName] = useState(initial?.name ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   const [touched, setTouched] = useState(false)
@@ -66,6 +68,7 @@ export function CategoryFormDialog({ mode, initial, existingNames, onSubmit, onC
           <input
             className="input"
             value={name}
+            readOnly={nameLocked}
             maxLength={NAME_MAX}
             onChange={(e) => setName(e.target.value)}
             onBlur={() => setTouched(true)}
@@ -73,6 +76,7 @@ export function CategoryFormDialog({ mode, initial, existingNames, onSubmit, onC
             placeholder="e.g. REF - Refrigerator"
           />
           {touched && nameError && <span className="field-error">{nameError}</span>}
+          {nameLocked && <span className="field-hint">Default categories keep their name.</span>}
         </label>
         <label className="field">
           <span className="field-label">

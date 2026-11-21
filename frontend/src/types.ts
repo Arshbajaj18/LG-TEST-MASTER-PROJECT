@@ -2,10 +2,10 @@ export interface Category {
   id: string
   name: string
   description: string
-  /** Mongo _id of the insight result row backing this category. */
-  resultId: string
+  /** One of the built-in categories: always present, can't be deleted or renamed. */
+  isDefault: boolean
+  createdAt: number
   updatedAt: number
-  updatedBy: string
 }
 
 export interface CategorySummary extends Category {
@@ -39,5 +39,4 @@ export interface TestMaster extends ParsedTestMaster {
   categoryId: string
   uploadId: string
   uploadedAt: number
-  uploadedBy: string
 }

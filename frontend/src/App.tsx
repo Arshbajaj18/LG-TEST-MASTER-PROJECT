@@ -1,4 +1,3 @@
-import { AuthGate } from './auth/AuthGate'
 import { CategoriesPage } from './components/categories/CategoriesPage'
 import { CategoryDetailPage } from './components/testMaster/CategoryDetailPage'
 import { ToastProvider } from './components/ui/ToastProvider'
@@ -16,9 +15,7 @@ function Routes() {
 export default function App() {
   return (
     <ToastProvider>
-      <AuthGate>
-        <Routes />
-      </AuthGate>
+      <Routes />
     </ToastProvider>
   )
 }

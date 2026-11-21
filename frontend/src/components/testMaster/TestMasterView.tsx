@@ -56,7 +56,6 @@ export function TestMasterView({ master }: { master: TestMaster }) {
             </span>
             <span className="summary-label">
               Uploaded {formatDateTime(master.uploadedAt)}
-              {master.uploadedBy ? ` by ${master.uploadedBy}` : ''}
             </span>
           </div>
         </div>

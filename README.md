@@ -12,7 +12,9 @@
     ```
     LG TEST MASTER PROJECT/
     ├── README.md                 # This file
-    ├── frontend/                 # Application code
+    ├── frontend/                 # React app
+    ├── backend/                  # API storing categories and test masters in MongoDB
+    ├── iosense.md                # API routes, default categories, data model
     ```
 
     **AI Studio Manager**
